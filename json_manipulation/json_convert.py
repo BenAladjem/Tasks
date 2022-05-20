@@ -92,7 +92,7 @@ def t_json_data_convert(js_data):
                 data_el_bytearay = float_to_bytearray(value)
                 len_el = len(data_el_bytearay)
             else:
-                type_value = 3  # всичко, което не е горните три се преобразува на string и така се обработва
+                type_value = 2  # всичко, което не е горните три се преобразува на string и така се обработва
                 value = str(value)
                 data_el_bytearay = string_to_bytearray(value)
                 len_el = len(data_el_bytearay)
