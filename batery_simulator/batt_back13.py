@@ -94,7 +94,6 @@ global batt_self_discharge
 global class_device
 
 
-
 class Devices(ABC):
     def __init__(self, bat_cap, rep_time, slp_time, wrk_time, type_rep, bsd):
         self.type_rep = type_rep
@@ -185,9 +184,9 @@ class Atmega:
 
 class Extended_powered:
     CHARGING_TIME = None
+
     def __init__(self, external_voltage):
         self.external_voltage = external_voltage
-
 
 
 class BatteryPowered:
@@ -226,6 +225,20 @@ class CalculateIterationEnergy:
 
         return energy
 
+class CalculateIterationTime:
+    @staticmethod
+    def calculate_iter_time(typ, rep, slp, wrk):
+        iteration_time = 0
+        for ch in typ:
+            if ch == 'r':
+                iteration_time += rep
+            elif ch == 'w':
+                iteration_time += wrk
+            elif ch == 's':
+                iteration_time += slp
+
+        return iteration_time
+
 
 class CalculateIterationCap:
     @staticmethod
@@ -247,22 +260,8 @@ class CalculateIterationCap:
         if energy != 0:
             iteration_cap = energy / tim
         return iteration_cap
-    
-    @staticmethod
-    def calculate_iteration_time(typ, rep_t, slp_t, wrk_t):
-        global iteration_time
-        
-        tim = 0
-        for ch in typ:
 
-            if ch == 'r':
-                tim += rep_t
-            elif ch == 'w':
-                tim += wrk_t
-            elif ch == 's':
-                tim += slp_t
-        iteration_cap = tim
-        return iteration_time
+
 
 
 class F5(BatteryPowered):
@@ -335,8 +334,7 @@ class WaterMeter(BatteryPowered):
                                                                                 self.rep_energy, self.rep_time,
                                                                                 self.slp_energy, self.slp_time,
                                                                                 self.wrk_energy, self.wrk_time)
-        
-        
+
 
 
 class FB(Atmega, BatteryPowered):
@@ -372,6 +370,8 @@ class FR(Atmega, Extended_powered):
     def __init__(self, bat_cap, rep_time, slp_time, wrk_time, type_rep, bsd):
         super().__init__(rep_time, slp_time, wrk_time, type_rep)
         pass
+
+
 '''
     cap = txt1.get()
     report_time = txt2.get()
@@ -392,9 +392,9 @@ def clicked_get_device():
 def print_something():
     global class_device
     batt_capacity = float(txt1.get())
-    report_time = float(txt2.get())/60
-    work_time = float(txt3.get())/60
-    sleep_time = float(txt4.get())/60
+    report_time = float(txt2.get()) / 60
+    work_time = float(txt3.get()) / 60
+    sleep_time = float(txt4.get()) / 60
     batt_self_discharge = float(txt5.get())
     device = combo.get()
     type_report = txt6.get()
@@ -483,4 +483,5 @@ print()
 # print(device)
 
 window.mainloop()
+
 
