@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter.ttk import *
 
 #validator1.3
-
+# Do not use this validator
 '''
 class Validator:
     def __init__(self, master1):
